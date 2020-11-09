@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="VideoMetaInfo.views.PlayerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VideoMetaInfo.views" xmlns:viewmodels="clr-namespace:VideoMetaInfo.viewmodels"
+             xmlns:models="clr-namespace:VideoMetaInfo.models" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:command="http://www.galasoft.ch/mvvmlight" xmlns:common="clr-namespace:VideoMetaInfo.common"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <viewmodels:PlayerViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ResourceDictionary Source="/resources/styles.xaml"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" Margin="8">
+            <TextBlock Text="구간 선택" FontSize="24" FontWeight="Bold" Margin="8"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="8">
+                <ItemsControl ItemsSource="{Binding Path=Metas}" AlternationCount="100">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:Meta}">
+                            <Button Margin="4,0,4,0" Width="200" Height="60">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="border" BorderThickness="2"
+                                                BorderBrush="#292C3B" Background="#292C3B">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Name="content"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#FFCE0B"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#FFCE0B"/>
+                                                <Setter TargetName="border" Property="BorderBrush" Value="#FFCE0B"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Button.Content>
+                                    <Grid Width="200" Height="60">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="8">
+                                            <TextBlock Text="{Binding Converter={StaticResource indexConverter}, Path=(ItemsControl.AlternationIndex), 
+                                                        RelativeSource={RelativeSource TemplatedParent}, 
+                                                        StringFormat=구간 {0}}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="8">
+                                            <TextBlock Text="{Binding Path=BeginFrame, 
+                                                Converter={StaticResource frameToSecondConverter}}"/>
+                                            <TextBlock Text=" ~ "/>
+                                            <TextBlock Text="{Binding Path=EndFrame, 
+                                                Converter={StaticResource frameToSecondConverter}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Button.Content>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <command:EventToCommand Command="{Binding Path=SelectMetaCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Button Margin="32" 
+                    Background="#292C3B"
+                    FontSize="16" FontWeight="Bold"
+                    Content="{Binding Path=State}"
+                    Width="48" Height="48"
+                    VerticalAlignment="Center" HorizontalAlignment="Left">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <command:EventToCommand Command="{Binding Path=StateChangeCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <common:CustomSlider x:Name="slider"
+                    AutoMove="True"
+                    Style="{StaticResource AppSliderStyle}"
+                    Value="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                    Minimum="0"
+                    Maximum="{Binding Path=Maximum, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="128,0,32,0"
+                    VerticalAlignment="Center">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Moved">
+                        <command:EventToCommand Command="{Binding Path=PlayerChangeCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>                
+            </common:CustomSlider>
+        </Grid>
+    </Grid>
+</UserControl>
