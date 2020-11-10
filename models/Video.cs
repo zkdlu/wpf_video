@@ -39,22 +39,24 @@ namespace VideoMetaInfo.models
 
         private BitmapImage MakeThumbnail(string name)
         {
-            ShellFile shellFile = ShellFile.FromFilePath(name);
-            Bitmap bitmap = shellFile.Thumbnail.Bitmap;
+            using (ShellFile shellFile = ShellFile.FromFilePath(name))
+            {
+                Bitmap bitmap = shellFile.Thumbnail.Bitmap;
 
-            MemoryStream ms = new MemoryStream();
-            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            ms.Seek(0, SeekOrigin.Begin);
-            image.StreamSource = ms;
+                MemoryStream ms = new MemoryStream();
+                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                ms.Seek(0, SeekOrigin.Begin);
+                image.StreamSource = ms;
 
-            image.DecodePixelWidth = 120;
-            image.DecodePixelHeight = 80;
+                image.DecodePixelWidth = 120;
+                image.DecodePixelHeight = 80;
 
-            image.EndInit();
+                image.EndInit();
 
-            return image;
+                return image;
+            }
         }
     }
 }

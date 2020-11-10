@@ -13,6 +13,8 @@ namespace VideoMetaInfo.models
 
         public string Tag { get; set; }
 
+        public string Name { get; set; }
+
         public long BeginFrame { get; set; }
 
         public long EndFrame { get; set; }

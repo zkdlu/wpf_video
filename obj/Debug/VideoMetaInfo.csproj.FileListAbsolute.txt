@@ -2,8 +2,6 @@ D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\resources\meta.json
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\VideoMetaInfo.exe.config
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\VideoMetaInfo.exe
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\VideoMetaInfo.pdb
-D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\Newtonsoft.Json.dll
-D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\Newtonsoft.Json.xml
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\obj\Debug\MainWindow.g.cs
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\obj\Debug\App.g.cs
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\obj\Debug\VideoMetaInfo_MarkupCompile.cache
@@ -43,3 +41,4 @@ D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\GalaSoft.MvvmLight.Platform.p
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\GalaSoft.MvvmLight.Platform.xml
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\obj\Debug\App.baml
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\obj\Debug\VideoMetaInfo.csprojAssemblyReference.cache
+D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\resources\label.xml

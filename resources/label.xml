@@ -1,0 +1,8 @@
+﻿<labels>
+  <label name="car">
+    <tag>자동차를 타다</tag>
+  </label>
+  <label name="sing">
+    <tag>노래하다</tag>
+  </label>  
+</labels>

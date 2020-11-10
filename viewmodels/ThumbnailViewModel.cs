@@ -11,7 +11,20 @@ namespace VideoMetaInfo.viewmodels
     {
         public IList<VideoModel> TotalVideos { get; set; }
 
-        public IList<string> VideoTags { get; set; }
+        public IList<string> VideoTags
+        {
+            get
+            {
+                var result = VideoFactory.Instance.Labels.Select(label =>
+                {
+                    return label.Tag;
+
+                }).ToList();
+                result.Insert(0, "전체");
+
+                return result;
+            }
+        }
 
         private ObservableCollection<VideoModel> videos;
         public ObservableCollection<VideoModel> Videos 
@@ -45,20 +58,13 @@ namespace VideoMetaInfo.viewmodels
         
         public ThumbnailViewModel()
         {
-            VideoTags = new List<string> 
-            { 
-                "전체", "노래하다", "차에 타다", "음식을 섞다",
-                "춤추다", "낚시하다", "음식을 굽다", "칼질하다",
-                "누워있다", "음식을 볶다", "악수하다", "음료를 따르다",
-                "마시다", "박수치다", "하이파이브 하다"
-            };
-            
             LoadVideo();
         }
 
         private void LoadVideo()
         {
-            VideoFactory videoFactory = new VideoFactory("resources/meta.json");
+            VideoFactory videoFactory = VideoFactory.Instance;
+            videoFactory.LoadLabel("resources/label.xml");
             var videos = videoFactory.GetVideoes();
 
             TotalVideos = videos
@@ -76,7 +82,10 @@ namespace VideoMetaInfo.viewmodels
             else
             {
                 Videos = new ObservableCollection<VideoModel>(
-                    TotalVideos.Where(v => v.Video.ContainTag(selectedTag)).ToList());
+                    TotalVideos.Where(v => 
+                    {
+                        return v.Video.ContainTag(selectedTag);
+                    }).ToList());
             }
         }
     }

@@ -10,6 +10,8 @@ namespace VideoMetaInfo.converters
         {
             if (value is string fileName)
             {
+                fileName = fileName.Replace('\\', '/');
+
                 int index = fileName.LastIndexOf("/");
                 if (index == -1)
                 {
