@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using VideoMetaInfo.common;
 
 namespace VideoMetaInfo.models
 {
@@ -40,51 +41,63 @@ namespace VideoMetaInfo.models
             Labels = labels.AsReadOnly();
         }
 
-        public IEnumerable<Video> GetVideoes()
+        public IList<Video> GetVideoes()
         {
+            List<Video> totalVideos = new List<Video>();
+
             foreach (var label in Labels)
             {
-                IList<Meta> metas = GetMetasByCsv(label);
-                yield return GetVideo(metas, label);
+                IList<Video> videos = GetVideoesByLabel(label);
+                totalVideos.AddRange(videos);
             }
+
+            return totalVideos;
         }
 
-        private IList<Meta> GetMetasByCsv(Label label)
-        {
-            string csvPath = $"input/label/{label.Name}_label";
-            string[] files = Directory.GetFiles(csvPath, "*.csv");
-            if (files.Length != 1)
-            {
-                throw new Exception($"Not exist {label.Name} csv file");
-            }
-            IList<Meta> metas = ReadMetaByCsv(label, files[0]);
-
-            return metas;
-        }
-
-        private Video GetVideo(IList<Meta> metas, Label label)
+        private IList<Video> GetVideoesByLabel(Label label)
         {
             string videoPath = $"input/video/{label.Name}_video";
             string[] files = Directory.GetFiles(videoPath, "*.mp4");
-            if (files.Length != 1)
+            if (files.Length == 0)
             {
-                throw new Exception($"Not exist {label.Name} video file");
+                Logger.Throw($"Not exist {label.Name} video files");
             }
 
-            using (ShellFile shellFile = ShellFile.FromFilePath(files[0]))
-            using (ShellObject shell = ShellObject.FromParsingName(shellFile.Path))
+            var videoes = new List<Video>();
+
+            foreach (string file in files)
             {
-                IShellProperty prop = shell.Properties.System.Media.Duration;
-                string durationStr = prop.FormatForDisplay(PropertyDescriptionFormatOptions.None);
+                using (ShellFile shellFile = ShellFile.FromFilePath(file))
+                using (ShellObject shell = ShellObject.FromParsingName(shellFile.Path))
+                {
+                    IShellProperty prop = shell.Properties.System.Media.Duration;
+                    string durationStr = prop.FormatForDisplay(PropertyDescriptionFormatOptions.None);
 
-                string name = files[0];
-                int fps = (int)shellFile.Properties.System.Video.FrameRate.Value.Value / 1000;
-                TimeSpan duration = TimeSpan.Parse(durationStr);
+                    int fps = (int)shellFile.Properties.System.Video.FrameRate.Value.Value / 1000;
+                    TimeSpan duration = TimeSpan.Parse(durationStr);
 
-                Video video = new Video(name, fps, duration, metas);
+                    IList<Meta> metas = GetMetasByVideo(label, 
+                        Path.GetFileNameWithoutExtension(file));
 
-                return video;
+                    Video video = new Video(file, fps, duration, metas);
+
+                    videoes.Add(video);
+                }
             }
+
+            return videoes;
+        }
+
+        private IList<Meta> GetMetasByVideo(Label label, string csvName)
+        {
+            string csvPath = $"input/label/{label.Name}_label/{csvName}.csv";
+
+            if (!File.Exists(csvPath))
+            {
+                Logger.Throw($"Not exists {csvName}.csv");
+            }
+
+            return ReadMetaByCsv(label, csvPath);
         }
 
         private IList<Meta> ReadMetaByCsv(Label label, string csvFile)
@@ -139,6 +152,5 @@ namespace VideoMetaInfo.models
 
             return metas;
         }
-
     }
 }

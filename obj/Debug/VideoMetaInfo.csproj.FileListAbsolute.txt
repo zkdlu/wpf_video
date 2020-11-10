@@ -1,4 +1,3 @@
-D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\resources\meta.json
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\VideoMetaInfo.exe.config
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\VideoMetaInfo.exe
 D:\외주\C#\VideoMetaInfo\VideoMetaInfo\bin\Debug\VideoMetaInfo.pdb

@@ -81,6 +81,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="common\CustomSlider.cs" />
+    <Compile Include="common\Logger.cs" />
     <Compile Include="converters\FileNameConverter.cs" />
     <Compile Include="converters\FrameToSecondConverter.cs" />
     <Compile Include="converters\IndexConverter.cs" />
@@ -164,9 +165,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <EmbeddedResource Include="resources\meta.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

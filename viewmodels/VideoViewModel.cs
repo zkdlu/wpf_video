@@ -17,10 +17,6 @@ namespace VideoMetaInfo.viewmodels
         private void OnPlayVideo(object obj)
         {
             Video = obj as Video;
-
-            Debug.WriteLine($"Video: { Video.Name }");
         }
     }
 }
-
-// https://derveljunit.tistory.com/306
